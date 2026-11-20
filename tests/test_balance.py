@@ -24,5 +24,6 @@ def test_isolated_not_lost(dirty):
 
 
 def test_impossible_ledger(clean):
-    clean["tail"]["allocations"][0]["allocated_l"] += 10000
+    clean["schedule"]["releases"][0]["released_l"] += 10000
+    clean["schedule"]["released_l"] += 10000
     assert reconcile(None, clean)["status"] == "DIFFERENCE"

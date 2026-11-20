@@ -8,6 +8,8 @@ from app.modules.m4_quotas.handler import router as quotas_router
 from app.modules.m4_quotas.rules import run as quotas
 from app.modules.m5_tail.handler import router as tail_router
 from app.modules.m5_tail.rules import run as tail
+from app.modules.m8_schedule.handler import router as schedule_router
+from app.modules.m8_schedule.rules import run as schedule
 from app.modules.m6_balance.handler import router as balance_router
 from app.modules.m6_balance.rules import run as balance
 from app.modules.m7_dispatch.handler import router as dispatch_router
@@ -21,6 +23,7 @@ STAGES = (
     ("channels", "渠道损耗", channels, channels_router),
     ("quotas", "优先级配额", quotas, quotas_router),
     ("tail", "尾量调平", tail, tail_router),
+    ("schedule", "轮灌排序", schedule, schedule_router),
     ("balance", "斗口勾稽", balance, balance_router),
     ("dispatch", "调度回执", dispatch, dispatch_router),
 )

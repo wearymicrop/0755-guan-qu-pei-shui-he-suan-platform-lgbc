@@ -1,0 +1,104 @@
+{
+  "config": {
+    "start": "2026-11-21T08:00:00+08:00",
+    "end": "2026-11-21T12:00:00+08:00",
+    "batch": "LG-1121-01",
+    "root": "总干渠",
+    "supply": "8",
+    "unit": "m³",
+    "quantum_l": 100,
+    "switch_loss": "0.5"
+  },
+  "channels": [
+    {
+      "channel": "总干渠",
+      "parent": null,
+      "inflow": "8",
+      "loss": "0.5",
+      "unit": "m³"
+    },
+    {
+      "channel": "东支渠",
+      "parent": "总干渠",
+      "inflow": "3.6",
+      "loss": "0.2",
+      "unit": "m³"
+    }
+  ],
+  "gates": [
+    {
+      "channel": "总干渠",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "state": "open"
+    },
+    {
+      "channel": "东支渠",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "state": "open"
+    }
+  ],
+  "rights": [
+    {
+      "outlet": "020",
+      "channel": "总干渠",
+      "version": "2026-B",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "minimum": "1",
+      "ceiling": "2",
+      "unit": "m³",
+      "priority": 1,
+      "weight": 1
+    },
+    {
+      "outlet": "021",
+      "channel": "总干渠",
+      "version": "2026-B",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "minimum": "0.5",
+      "ceiling": "1",
+      "unit": "m³",
+      "priority": 2,
+      "weight": 1
+    },
+    {
+      "outlet": "001",
+      "channel": "东支渠",
+      "version": "2026-B",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "minimum": "1",
+      "ceiling": "2",
+      "unit": "m³",
+      "priority": 1,
+      "weight": 1
+    },
+    {
+      "outlet": "002",
+      "channel": "东支渠",
+      "version": "2026-B",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "minimum": "0.4",
+      "ceiling": "0.8",
+      "unit": "m³",
+      "priority": 3,
+      "weight": 1
+    },
+    {
+      "outlet": "003",
+      "channel": "东支渠",
+      "version": "2026-B",
+      "start": "2026-11-21T08:00:00+08:00",
+      "end": "2026-11-21T12:00:00+08:00",
+      "minimum": "0.6",
+      "ceiling": "1.2",
+      "unit": "m³",
+      "priority": 2,
+      "weight": 1
+    }
+  ]
+}

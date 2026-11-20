@@ -12,8 +12,9 @@ def run(data, _previous):
         batch, root = key(config["batch"]), key(config["root"])
         supply = liters(config["supply"], config["unit"])
         quantum = integer(config["quantum_l"], 1, 100000)
+        switch_loss = liters(config["switch_loss"], config["unit"]) if "switch_loss" in config else 0
     except (KeyError, TypeError, ValueError) as error:
-        raise InputError("BAD_BATCH", "批次、渠首水量或最小单位有误") from error
+        raise InputError("BAD_BATCH", "批次、渠首水量、切换损失或最小单位有误") from error
     issues, grouped, records = [], defaultdict(list), []
     for row, source in rows(data, "gates"):
         try:
@@ -43,4 +44,5 @@ def run(data, _previous):
         states[channel] = state
         records.append({"channel": channel, "state": state, "sources": sources})
     return {"batch": batch, "root": root, "start": start.isoformat(), "end": end.isoformat(),
-            "supply_l": supply, "quantum_l": quantum, "gates": states, "records": records, "issues": issues}
+            "supply_l": supply, "quantum_l": quantum, "switch_loss_l": switch_loss,
+            "gates": states, "records": records, "issues": issues}

@@ -6,5 +6,6 @@ REASONS = {
     "GATE_BLOCKED": "渠段闸门未开启", "UPSTREAM_BLOCKED": "上游闸闭或流量不可用",
     "CHANNEL_DISCONNECTED": "渠段未接入渠首或存在环路", "CHILD_FLOW_EXCESS": "支渠入流超出上游净流量",
     "RIGHT_ROUTE_BLOCKED": "权证对应渠段不可配水", "MINIMUM_SHORTAGE": "可用流量低于保底需求",
+    "MINIMUM_UNMET": "轮灌削减后实放低于保底",
     "DUPLICATE_OUTLET": "斗口重复扣账", "CHANNEL_UNBALANCED": "渠段水量差异",
 }

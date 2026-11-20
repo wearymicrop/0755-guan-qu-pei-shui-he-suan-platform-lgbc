@@ -13,7 +13,8 @@
 | M3 渠道损耗 | 核对实测分流和渠损 | `GET /api/channels/{sample}` | `app/modules/m3_channels/rules.py` | `tests/test_channels.py` |
 | M4 优先级配额 | 核算保底与权重配额 | `GET /api/quotas/{sample}` | `app/modules/m4_quotas/rules.py` | `tests/test_quotas.py` |
 | M5 尾量调平 | 分派最小水量单位 | `GET /api/tail/{sample}` | `app/modules/m5_tail/rules.py` | `tests/test_tail.py` |
-| M6 斗口勾稽 | 比对供水、损耗、实配与剩余 | `GET /api/balance/{sample}` | `app/modules/m6_balance/rules.py` | `tests/test_balance.py` |
+| M8 轮灌排序 | 合并相邻斗口并裁决削减 | `GET /api/schedule/{sample}` | `app/modules/m8_schedule/rules.py` | `tests/test_schedule.py` |
+| M6 斗口勾稽 | 比对供水、损耗、切换、实放与剩余 | `GET /api/balance/{sample}` | `app/modules/m6_balance/rules.py` | `tests/test_balance.py` |
 | M7 调度回执 | 编制可下发回执或待审草案 | `GET /api/dispatch/{sample}` | `app/modules/m7_dispatch/rules.py` | `tests/test_dispatch.py` |
 
 ## 陷阱登记
@@ -29,11 +30,17 @@
 | TRAP-23 | 干净样例：权证在批次开始失效 | 两版均生效 | 采用半开区间 | `app/modules/m2_rights/rules.py` | `tests/test_rights.py::test_end_exclusive` |
 | TRAP-24 | 干净样例：斗口余数相同 | 逐行四舍五入超分 | 用最大余数守恒 | `app/modules/m5_tail/rules.py` | `tests/test_tail.py::test_largest_remainder` |
 | TRAP-25 | 脏样例：斗口活动权证重叠 | 取到哪个版本不确定 | 重叠版本同时隔离 | `app/modules/m2_rights/rules.py` | `tests/test_rights.py::test_overlap_right` |
+| TRAP-27 | 干旱样例：削减中部斗口 | 放水次数增加却未重算切换损失 | 减到零即退出，按当前次数重算缺口 | `app/modules/m8_schedule/rules.py` | `tests/test_schedule.py::test_drop_splits_event_and_rebills_switch` |
+| TRAP-28 | 同一输入重跑 | 放水次数被重复登记 | 归档复用且轮灌顺序不变 | `app/runs.py` | `tests/test_schedule.py::test_rerun_adds_no_release_event` |
+
+## 轮灌裁决
+
+同渠段内斗口编码连续且实放非零的斗口合并为一次放水，每次放水按 `switch_loss` 计闸门切换损失，从本渠段可配水扣除。可配水先抵切换损失，不足时按优先级从低到高、同级按斗口编码从尾到首逐口削减，削减量按缺口向上取整到最小刻度；斗口减到零即退出轮灌，退出后按新的放水次数重算缺口，直至渠段收支平衡。轮灌顺序按渠首遍历先上游后下游、渠段内按斗口编码，全程确定，同一输入重跑放水次数不变。实放低于保底的斗口记 `MINIMUM_UNMET` 待复核。
 
 ## 对账规则
 
-渠首供水等于已核实渠损、斗口实配和所有本地余量。脏样例部分支渠受闸冲突隔离，未能核实的入流保留于上游余量供复核。各斗口及渠道均带原始行。
+渠首供水等于已核实渠损、闸门切换损失、斗口实放和所有本地余量。脏样例部分支渠受闸冲突隔离，未能核实的入流保留于上游余量供复核。各斗口及渠道均带原始行。
 
 ## 已知边界
 
-按单一完整轮灌时段计算，时段内切换闸令需分批录入。渠道是单渠首树状网络，按实测入流扣账。回执草案由人工复核。
+按单一完整轮灌时段计算，时段内切换闸令需分批录入。渠道是单渠首树状网络，按实测入流扣账。相邻指同渠段内斗口编码连续；切换损失按放水次数计，不区分闸门类型。回执草案由人工复核。

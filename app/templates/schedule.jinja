@@ -1,0 +1,7 @@
+{% from 'table.jinja' import ledger %}
+<div class="panel-head"><div><h2>轮灌顺序</h2><small>{{ current.event_count }} 次放水 · 每次切换损失 {{ current.switch_loss_l }} L · 合计 {{ current.switch_l }} L · 未满足保底 {{ current.unmet_l }} L</small></div></div>
+{{ ledger(current.events,[('次序','seq','num'),('渠段','channel',''),('合并斗口','outlets_label',''),('实放 L','release_l','num'),('切换损失 L','switch_l','num')]) }}
+<div class="panel-head"><div><h2>逐口实放</h2><small>实放 {{ current.released_l }} L · 削减 {{ current.cut_l }} L</small></div></div>
+{{ ledger(current.releases,[('斗口','outlet',''),('渠段','channel',''),('优先级','priority','num'),('保底 L','minimum_l','num'),('计划 L','allocated_l','num'),('实放 L','released_l','num'),('未满足保底 L','unmet_l','num')]) }}
+<div class="panel-head"><div><h2>余水去向</h2><small>各渠段余水留存本渠，计入剩余水量</small></div></div>
+{{ ledger(current.channels,[('渠段','channel',''),('可配 L','usable_l','num'),('实放 L','released_l','num'),('切换损失 L','switch_l','num'),('放水次数','events','num'),('余水留存 L','remainder_l','num')]) }}
